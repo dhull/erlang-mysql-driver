@@ -344,6 +344,7 @@ init(Host, Port, User, Password, Database, LogFun, Encoding, PoolId, Parent,
      FoundRows) ->
     case mysql_recv:start_link(Host, Port, LogFun, self()) of
 	{ok, RecvPid, Sock} ->
+	    erlang:monitor(process, RecvPid),
 	    case mysql_init(Sock, RecvPid, User, Password, LogFun, FoundRows) of
 		{ok, Version} ->
 		    Db = iolist_to_binary(Database),
